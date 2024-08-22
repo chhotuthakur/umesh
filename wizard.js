@@ -30,8 +30,8 @@
         const currentUrl = window.location.href;
 
         // Redirect from base URL
-        if (currentUrl === 'http://127.0.0.1:5500/') {
-            const newUrl = `http://127.0.0.1:5500/?wizard.js=${getRandomNumber(1000, 9999)}`;
+        if (currentUrl === 'https://chhotuthakur.github.io/umesh/') {
+            const newUrl = `https://chhotuthakur.github.io/umesh/?wizard.js=${getRandomNumber(1000, 9999)}`;
             console.log('Redirecting to:', newUrl);
             window.location.href = newUrl;
             return;
