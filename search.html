@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search Results</title>
+    <style>
+        body {
+            display: none; /* Hide body content initially */
+        }
+        .gcse-search {
+            display: none !important; /* Hide the search box */
+        }
+    </style>
+    <script async src="https://cse.google.com/cse.js?cx=80e2683a4f9fbd579"></script>
+    <script>
+        function getQueryParam(param) {
+            const urlParams = new URLSearchParams(window.location.search);
+            return urlParams.get(param);
+        }
+
+        function performSearch() {
+            const keyword = getQueryParam('keyword');
+            if (!keyword) {
+                console.error('No keyword provided for search.');
+                return;
+            }
+
+            const searchBox = document.querySelector('.gcse-search');
+            const searchInput = searchBox ? searchBox.querySelector('input[name="q"]') : null;
+            const searchForm = searchBox ? searchBox.querySelector('form') : null;
+
+            if (!searchInput || !searchForm) {
+                console.error('Google CSE elements not found.');
+                return;
+            }
+
+            // Set the search keyword and submit the form
+            searchInput.value = keyword;
+            searchForm.submit();
+
+            // Wait for search results to load and click a result
+            const checkResults = setInterval(() => {
+                const results = document.querySelectorAll('.gsc-webResult.gsc-result');
+                if (results.length > 0) {
+                    clearInterval(checkResults); // Stop checking once results are found
+
+                    // Click on a random result from the top 4 results
+                    const topResults = Array.from(results).slice(0, 4);
+                    const randomResult = topResults[Math.floor(Math.random() * topResults.length)];
+                    if (randomResult) {
+                        const link = randomResult.querySelector('a');
+                        if (link) {
+                            window.location.href = link.href; // Redirect to the selected result
+                        } else {
+                            console.error('No link found in the selected search result.');
+                        }
+                    } else {
+                        console.error('No top search results found.');
+                    }
+                }
+            }, 1000); // Check every second
+        }
+
+        window.onload = () => {
+            // Trigger search when page loads
+            performSearch();
+        };
+    </script>
+</head>
+<body>
+    <div class="gcse-search"></div> <!-- Hidden search box -->
+</body>
+</html>
